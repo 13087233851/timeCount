@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>简单的计时器</title>
+	<style type="text/css">
+		/*定时器部分*/
+.time_count{
+	position:fixed;
+	top:200px;
+	left:1000px;
+	min-width:242px;
+}
+.time_count div{
+	width:30px;
+	height:40px;
+	background:#0078c1;
+	color:white;
+	float:left;
+	line-height: 40px;
+	text-align:center;
+	font-size:30px;
+	border-radius:2px;
+	margin-left:5px;
+}
+.time_count .get_away{
+	width:16px;
+	margin-left:0px;
+	margin-right:0px;
+	background:white;
+	position:relative;
+}
+.time_count .get_away div{
+	position:absolute;
+	width:8px;
+	height:8px;
+	
+	box-shadow:1px 1px 1px rgba(4,4,4,0.5);
+	left:50%;
+	margin-left:-3px;
+	border-radius:50%;
+	background:#0078c1;
+}
+.time_count .get_away .circle_1{
+	top:8px;
+}
+.time_count .get_away .circle_2{
+	top:22px;
+}
+
+	</style>
+</head>
+<body>
+	<!--这边是计时器部分-->
+<div class="time_count">
+	<div class="time_hour_1">0</div>
+	<div class="time_hour_2">0</div>
+	<div class="get_away">
+		<div class="circle_1"></div>
+		<div class="circle_2"></div>
+	</div>
+	<div class="time_min_1">0</div>
+	<div class="time_min_2">0</div>
+	<div class="get_away">
+		<div class="circle_1"></div>
+		<div class="circle_2"></div>
+	</div>
+	<div class="time_seconds_1">0</div>
+	<div class="time_seconds_2">0</div>
+</div>
+<script src="jquery.js" type="text/javascript"></script>
+<script type="text/javascript" >
+//total是时间总量  化成秒数    然后3600  60  60   拆分
+	var time_begin = function(total){
+	var total = total;
+	var hour_part = null;
+	var hour_1 = 0;
+	var hour_2 = 0;
+
+	var num = null;
+	var min_part = 0;
+	var min_1 = 0;
+	var min_2 = 0;
+
+	var seconds = null;
+	var sec_1 = 0;
+	var sec_2 = 0;
+
+
+
+	$(".time_seconds_2").text(sec_2);
+	$(".time_seconds_1").text(sec_1);
+	$(".time_min_2").text(min_2);
+	$(".time_min_1").text(min_1);
+	$(".time_hour_2").text(hour_2);
+	$(".time_hour_1").text(hour_1);
+	//var sec_1 = null;
+	var begin = setInterval(function(){
+		total--;
+		hour_part = Math.floor(total/3600); 
+		if(hour_part>10){
+			hour_2 = hour_part%10;
+			hour_1 = Math.floor(hour_part/10);
+		}else if(hour_part == 10){
+			hour_2 = 0;
+			hour_1 = 1;
+		} else{
+			hour_1 = 0;
+			hour_2 = hour_part;
+		}
+
+		num = total-hour_part*3600;
+		min_part = Math.floor(num/60);
+		if(min_part>10){
+			min_2 = min_part%10;
+			min_1 = Math.floor(min_part/10);
+		}else if(min_part == 10){
+			min_2 = 0;
+			min_1 = 1;
+		}else{
+			min_2 = min_part;
+			min_1 = 0;
+		}
+
+		seconds = num - min_part*60;
+		if(seconds>10){
+			sec_2 = seconds%10;
+			sec_1 = Math.floor(seconds/10);
+		}else if(seconds == 10){
+			sec_2 = 0;
+			sec_1 = 1;
+		}else{
+			sec_2 = seconds;
+			sec_1 = 0;
+		}
+
+		$(".time_seconds_2").text(sec_2);
+		$(".time_seconds_1").text(sec_1);
+		$(".time_min_2").text(min_2);
+		$(".time_min_1").text(min_1);
+		$(".time_hour_2").text(hour_2);
+		$(".time_hour_1").text(hour_1);
+		console.log(total);
+		console.log(hour_1+" "+hour_2+ " "+min_1+" " +min_2+ " "+sec_1+' '+sec_2);
+		if(total==300){
+			//剩余时间提醒 模块
+			clearInterval(begin);
+		}
+
+		if(sec_2 ==0&&sec_1 == 0&& min_2 ==0&&min_1 ==0&&hour_2 ==0&&hour_1 ==0){
+			clearInterval(begin);
+		}
+	},1000);
+}
+time_begin(310000);
+</script>
+</body>
+</html>
